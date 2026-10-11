@@ -195,46 +195,28 @@ datasets/bonn/<sequence>/
 
 ## Configuration
 
-All settings are plain YAML files under `configs/`. Per-sequence configs use an
-`inherit_from` key that recursively inherits and merges a base config
-(see `utils/config_utils.py`). For example, `configs/rgbd/tum/fr1.yaml` inherits
-`configs/rgbd/tum/base_config.yaml` and only overrides the dataset path and camera
-calibration.
+Every run is driven by a YAML config file (passed with `--config`); without one the
+program will not start. All parameters already have defaults in
+`configs/rgbd/tum/base_config.yaml`, and per-sequence configs use an `inherit_from`
+key to recursively inherit and merge that base config (see `utils/config_utils.py`).
 
-Key parameters (from `configs/rgbd/tum/base_config.yaml`):
+For a new sequence you normally only need to override two things: `dataset_path` and
+the camera `Calibration`. A minimal config looks like:
 
-| Section | Parameter | Default | Description |
-|---|---|---|---|
-| `Results` | `save_results` | `True` | Save outputs to `save_dir` |
-| `Results` | `use_gui` | `True` | Enable the interactive Open3D GUI |
-| `Results` | `use_wandb` | `False` | Log metrics to Weights & Biases |
-| `Dataset` | `type` | `tum` | `tum` / `realsense` |
-| `Dataset` | `sensor_type` | `depth` | `depth` / `monocular` / `stereo` |
-| `Dataset` | `dataset_path` | — | Path to the sequence (**edit per scene**) |
-| `Dataset` | `pcd_downsample` | `128` | Point-cloud downsampling factor (per frame) |
-| `Dataset` | `Calibration` | — | `fx/fy/cx/cy`, distortion `k1..k3`, `depth_scale` |
-| `Training` | `segmentor` | `Instance` | `Instance` (YOLO) or `Semantic` (Mask2Former) |
-| `Training` | `remove_dynamic` | `True` | Enable dynamic-object handling |
-| `Training` | `dynamic_depth_ratio` | `0.9` | Depth-ratio threshold for the geometric consistency check |
-| `Training` | `use_gt_pose` | `False` | Use ground-truth poses instead of tracking |
-| `Training` | `tracking_itr_num` | `100` | Tracking iterations per frame |
-| `Training` | `mapping_itr_num` | `150` | Mapping iterations per keyframe |
-| `Training` | `kf_interval` | `5` | Min. frame gap between keyframes |
-| `Training` | `window_size` | `8` | Local window (keyframes) for mapping |
-| `Training` | `pose_window` | `3` | Keyframes whose poses are refined in BA |
-| `Training` | `alpha` | `0.9` | RGB vs. depth weighting in the loss |
-| `Training` | `edge_threshold` | `1.1` | Gradient-mask threshold for tracking |
-| `Training` | `rgb_boundary_threshold` | `0.01` | Pixels below this are ignored |
-| `Training` | `kf_translation` | `0.08` | Keyframe translation threshold (× median depth) |
-| `Training` | `kf_overlap` | `0.8` | Keyframe overlap threshold |
-| `Training` | `prune_mode` | `slam` | `slam` or `odometry` pruning policy |
-| `Training` | `post_training` | `False` | Run the final color-refinement stage |
-| `Training` | `post_training_iters` | `30000` | Iterations of color refinement |
-| `opt_params` | `iterations` | `30000` | 3DGS training schedule (inherited from 3DGS) |
-| `model_params` | `sh_degree` | `0` | Max SH degree for RGB/semantic features |
+```yaml
+inherit_from: configs/rgbd/tum/base_config.yaml
+Dataset:
+  dataset_path: "datasets/tum/rgbd_dataset_freiburg1_desk"
+  Calibration:
+    fx: 517.3
+    fy: 516.5
+    cx: 318.6
+    cy: 255.3
+```
 
-To run a new sequence, copy an existing config, update `dataset_path` and the
-`Calibration` block to match the camera intrinsics, and keep everything else.
+Frequently used optional switches (all defined with defaults in `base_config.yaml`):
+`segmentor` (`Instance` / `Semantic`), `remove_dynamic`, `dynamic_depth_ratio`,
+`use_gt_pose`, `post_training`, and the tracking / mapping iteration counts.
 
 ---
 
