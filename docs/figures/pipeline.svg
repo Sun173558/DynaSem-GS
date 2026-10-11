@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="620" viewBox="0 0 1200 620" font-family="Arial, Helvetica, 'Segoe UI', sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#64748B"/>
+    </marker>
+    <marker id="arrow-teal" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#0F766E"/>
+    </marker>
+  </defs>
+
+  <!-- background -->
+  <rect x="0" y="0" width="1200" height="620" fill="#FFFFFF"/>
+
+  <!-- lane headers -->
+  <text x="220" y="42" text-anchor="middle" font-size="13" font-weight="bold" fill="#94A3B8" letter-spacing="2">INPUT &amp; PERCEPTION</text>
+  <text x="620" y="42" text-anchor="middle" font-size="13" font-weight="bold" fill="#94A3B8" letter-spacing="2">SLAM CORE</text>
+  <text x="1010" y="42" text-anchor="middle" font-size="13" font-weight="bold" fill="#94A3B8" letter-spacing="2">OUTPUTS</text>
+
+  <!-- ============ Lane 1 : input & perception ============ -->
+  <!-- RGB-D Stream -->
+  <rect x="60" y="70" width="320" height="86" rx="10" fill="#F0FDFA" stroke="#0F766E" stroke-width="1.5"/>
+  <text x="220" y="102" text-anchor="middle" font-size="15" font-weight="bold" fill="#0F172A">RGB-D Stream</text>
+  <text x="220" y="124" text-anchor="middle" font-size="12.5" fill="#475569">TUM · Replica · EuRoC · RealSense</text>
+
+  <!-- Semantic Segmentation -->
+  <rect x="60" y="200" width="320" height="98" rx="10" fill="#F0FDFA" stroke="#0F766E" stroke-width="1.5"/>
+  <text x="220" y="232" text-anchor="middle" font-size="15" font-weight="bold" fill="#0F172A">Semantic Segmentation</text>
+  <text x="220" y="256" text-anchor="middle" font-size="12.5" fill="#475569">Instance: YOLO (person, chair, table, …)</text>
+  <text x="220" y="276" text-anchor="middle" font-size="12.5" fill="#475569">Semantic: Mask2Former (ADE20K)</text>
+
+  <!-- Dynamic Mask -->
+  <rect x="60" y="342" width="320" height="98" rx="10" fill="#FFF7ED" stroke="#EA580C" stroke-width="1.5"/>
+  <text x="220" y="374" text-anchor="middle" font-size="15" font-weight="bold" fill="#0F172A">Dynamic Mask</text>
+  <text x="220" y="398" text-anchor="middle" font-size="12.5" fill="#475569">zero-out moving objects</text>
+  <text x="220" y="418" text-anchor="middle" font-size="12.5" fill="#475569">+ geometry-consistency check</text>
+
+  <!-- ============ Lane 2 : SLAM core ============ -->
+  <!-- Frontend -->
+  <rect x="460" y="70" width="320" height="150" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="620" y="102" text-anchor="middle" font-size="15" font-weight="bold" fill="#0F172A">FrontEnd · Tracking</text>
+  <text x="620" y="130" text-anchor="middle" font-size="12.5" fill="#475569">photometric + depth tracking loss</text>
+  <text x="620" y="152" text-anchor="middle" font-size="12.5" fill="#475569">per-frame segmentation</text>
+  <text x="620" y="174" text-anchor="middle" font-size="12.5" fill="#475569">keyframe selection</text>
+  <text x="620" y="196" text-anchor="middle" font-size="12.5" fill="#475569">(multiprocessing process)</text>
+
+  <!-- Backend -->
+  <rect x="460" y="300" width="320" height="210" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="620" y="332" text-anchor="middle" font-size="15" font-weight="bold" fill="#0F172A">BackEnd · Mapping</text>
+  <text x="620" y="360" text-anchor="middle" font-size="12.5" fill="#475569">RGB L1 + depth L1 + semantic L1</text>
+  <text x="620" y="382" text-anchor="middle" font-size="12.5" fill="#475569">densification &amp; pruning</text>
+  <text x="620" y="404" text-anchor="middle" font-size="12.5" fill="#475569">keyframe pose BA</text>
+  <text x="620" y="426" text-anchor="middle" font-size="12.5" fill="#475569">isotropic regularization</text>
+  <text x="620" y="448" text-anchor="middle" font-size="12.5" fill="#475569">color refinement (optional)</text>
+  <text x="620" y="486" text-anchor="middle" font-size="12.5" fill="#94A3B8">(multiprocessing process)</text>
+
+  <!-- ============ Lane 3 : outputs ============ -->
+  <rect x="860" y="70" width="290" height="80" rx="10" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.5"/>
+  <text x="1005" y="102" text-anchor="middle" font-size="14" font-weight="bold" fill="#0F172A">RGB Map</text>
+  <text x="1005" y="124" text-anchor="middle" font-size="12.5" fill="#475569">point_cloud.ply</text>
+
+  <rect x="860" y="180" width="290" height="80" rx="10" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.5"/>
+  <text x="1005" y="212" text-anchor="middle" font-size="14" font-weight="bold" fill="#0F172A">Semantic Map</text>
+  <text x="1005" y="234" text-anchor="middle" font-size="12.5" fill="#475569">semantic_cloud.ply</text>
+
+  <rect x="860" y="290" width="290" height="80" rx="10" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.5"/>
+  <text x="1005" y="322" text-anchor="middle" font-size="14" font-weight="bold" fill="#0F172A">Evaluation</text>
+  <text x="1005" y="344" text-anchor="middle" font-size="12.5" fill="#475569">ATE · PSNR · SSIM · LPIPS</text>
+
+  <!-- ============ arrows ============ -->
+  <!-- RGB-D -> Segmentation -->
+  <line x1="220" y1="156" x2="220" y2="199" stroke="#64748B" stroke-width="2" marker-end="url(#arrow)"/>
+  <!-- Segmentation -> Dynamic Mask -->
+  <line x1="220" y1="298" x2="220" y2="341" stroke="#64748B" stroke-width="2" marker-end="url(#arrow)"/>
+  <!-- Dynamic Mask -> Frontend -->
+  <path d="M 380 391 L 445 391 L 445 145 L 459 145" fill="none" stroke="#0F766E" stroke-width="2" marker-end="url(#arrow-teal)"/>
+  <!-- Frontend -> Backend (keyframes) -->
+  <line x1="620" y1="220" x2="620" y2="299" stroke="#64748B" stroke-width="2" marker-end="url(#arrow)"/>
+  <!-- Backend -> Frontend (sync, dashed) -->
+  <line x1="680" y1="300" x2="680" y2="220" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+  <text x="700" y="258" font-size="11.5" fill="#94A3B8">sync map &amp; poses</text>
+  <!-- Backend -> outputs -->
+  <path d="M 780 345 L 820 345 L 820 110 L 859 110" fill="none" stroke="#64748B" stroke-width="2" marker-end="url(#arrow)"/>
+  <path d="M 780 395 L 820 395 L 820 220 L 859 220" fill="none" stroke="#64748B" stroke-width="2" marker-end="url(#arrow)"/>
+  <path d="M 780 445 L 820 445 L 820 330 L 859 330" fill="none" stroke="#64748B" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- GUI footnote -->
+  <text x="620" y="560" text-anchor="middle" font-size="12.5" fill="#64748B">Interactive Open3D GUI with semantic shader · real-time visualization of map, poses &amp; segmentation</text>
+  <line x1="330" y1="546" x2="910" y2="546" stroke="#E2E8F0" stroke-width="1"/>
+</svg>

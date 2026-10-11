@@ -1,0 +1,44 @@
+# ================= Datasets (large files, not part of the source) =================
+datasets/
+*.tgz
+*.zip
+
+# ================= Run outputs =================
+results/
+outputs/
+wandb/
+
+# ================= Model weights =================
+model/*.pt
+*.onnx
+
+# ================= Python =================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+*.egg
+build/
+dist/
+.eggs/
+
+# ================= CUDA extension build artifacts =================
+submodules/*/build/
+submodules/*/*.egg-info/
+
+# ================= Editors / OS =================
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ================= Logs =================
+*.log
+nohup.out
+
+# ================= Jupyter =================
+.ipynb_checkpoints/
