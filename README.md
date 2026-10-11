@@ -292,7 +292,7 @@ results/<dataset>_<seq>/<YYYY-MM-DD-HH-MM-SS>/
 ```
 
 If `use_wandb: True`, the metrics are also pushed to Weights & Biases
-(project `MonoGS`, table `Metrics` with `Before`/`After` rows).
+(project `semgs`, table `Metrics` with `Before`/`After` rows).
 
 ---
 
