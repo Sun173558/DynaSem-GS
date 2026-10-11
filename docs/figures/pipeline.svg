@@ -20,7 +20,7 @@
   <!-- RGB-D Stream -->
   <rect x="60" y="70" width="320" height="86" rx="10" fill="#F0FDFA" stroke="#0F766E" stroke-width="1.5"/>
   <text x="220" y="102" text-anchor="middle" font-size="15" font-weight="bold" fill="#0F172A">RGB-D Stream</text>
-  <text x="220" y="124" text-anchor="middle" font-size="12.5" fill="#475569">TUM · Replica · EuRoC · RealSense</text>
+  <text x="220" y="124" text-anchor="middle" font-size="12.5" fill="#475569">TUM · Bonn · RealSense</text>
 
   <!-- Semantic Segmentation -->
   <rect x="60" y="200" width="320" height="98" rx="10" fill="#F0FDFA" stroke="#0F766E" stroke-width="1.5"/>

@@ -1,4 +1,4 @@
-name: MonoGS
+name: semgs
 channels:
   - pytorch
   - nvidia

@@ -31,7 +31,6 @@ point cloud** of the static scene.
 - [Running](#running)
 - [Evaluation and Outputs](#evaluation-and-outputs)
 - [Repository Structure](#repository-structure)
-- [Citation](#citation)
 - [License](#license)
 - [Acknowledgement](#acknowledgement)
 
@@ -102,10 +101,10 @@ cd DynaSem-GS
 
 ```bash
 conda env create -f environment.yml
-conda activate MonoGS
+conda activate semgs
 ```
 
-`environment.yml` (environment name: **MonoGS**) installs:
+`environment.yml` (environment name: **semgs**) installs:
 
 | Component | Version |
 |---|---|
@@ -166,48 +165,30 @@ datasets/tum/rgbd_dataset_freiburg1_desk/
 └── groundtruth.txt
 ```
 
-### Replica
+### Bonn RGB-D Dynamic
 
-```bash
-bash scripts/download_replica.sh    # downloads the NICE-SLAM Replica.zip
-```
-
-Expected layout:
-
-```
-datasets/replica/office0/
-├── results/
-│   ├── frame000000.jpg ...
-│   └── depth000000.png ...
-└── traj.txt
-```
-
-### EuRoC (stereo)
-
-```bash
-bash scripts/download_euroc.sh      # downloads MH_02_easy
-```
-
-Expected layout:
+Bonn sequences use the **same TUM RGB-D format**, so they are loaded with the `tum`
+dataset type. Download sequences from the
+[Bonn RGB-D Dynamic dataset](https://www.ipb.uni-bonn.de/html/projects/RGBD_dynamics/)
+website (e.g. `walking_static`, `sitting_static`) and place them as:
 
 ```
-datasets/euroc/mh02/
-└── mav0/
-    ├── cam0/data/*.png
-    ├── cam1/data/*.png
-    └── state_groundtruth_estimate0/data.csv
+datasets/bonn/<sequence>/
+├── rgb/                # color frames
+├── depth/              # depth frames
+├── rgb.txt
+├── depth.txt
+└── groundtruth.txt
 ```
 
-> **Note:** for EuRoC the depth map is computed on the fly from the stereo pair with
-> OpenCV `StereoSGBM` (see `utils/dataset.py`), following ORB-SLAM2 conventions.
+> Bonn camera intrinsics: `fx=535.4, fy=539.2, cx=320.1, cy=247.6` (no distortion).
+> See `configs/rgbd/tum/fr3.yaml` for an example configuration.
 
 ### Supported datasets
 
 | `Dataset.type` | `sensor_type` | Notes |
 |---|---|---|
-| `tum` | `depth` | RGB-D; `monocular` also supported |
-| `replica` | `depth` | RGB-D |
-| `euroc` | `stereo` | depth from stereo matching |
+| `tum` | `depth` | RGB-D; also used for Bonn sequences (same format); `monocular` supported |
 | `realsense` | `depth` / `monocular` | live sensor; forces GUI on |
 
 ---
@@ -227,7 +208,7 @@ Key parameters (from `configs/rgbd/tum/base_config.yaml`):
 | `Results` | `save_results` | `True` | Save outputs to `save_dir` |
 | `Results` | `use_gui` | `True` | Enable the interactive Open3D GUI |
 | `Results` | `use_wandb` | `False` | Log metrics to Weights & Biases |
-| `Dataset` | `type` | `tum` | `tum` / `replica` / `euroc` / `realsense` |
+| `Dataset` | `type` | `tum` | `tum` / `realsense` |
 | `Dataset` | `sensor_type` | `depth` | `depth` / `monocular` / `stereo` |
 | `Dataset` | `dataset_path` | — | Path to the sequence (**edit per scene**) |
 | `Dataset` | `pcd_downsample` | `128` | Point-cloud downsampling factor (per frame) |
@@ -262,12 +243,12 @@ To run a new sequence, copy an existing config, update `dataset_path` and the
 Activate the environment and launch SLAM with a config:
 
 ```bash
-conda activate MonoGS
+conda activate semgs
 python slam.py --config configs/rgbd/tum/fr1.yaml
 ```
 
 Examples for other scenes: replace `fr1.yaml` with `fr2.yaml` / `fr3.yaml` (TUM),
-or create an analogous config for Replica / EuRoC sequences.
+or create an analogous config for Bonn sequences (see `configs/rgbd/tum/fr3.yaml`).
 
 ### GUI usage
 
@@ -347,7 +328,7 @@ DynaSem-GS/
 │   ├── semantic_utils.py         # SemanticSegmentor (MMSeg Mask2Former, ADE20K)
 │   ├── instance_utils.py         # InstanceSegmentor (Ultralytics YOLO)
 │   ├── camera_utils.py           # Camera object (semantic-aware)
-│   ├── dataset.py                # TUM / Replica / EuRoC / RealSense parsers
+│   ├── dataset.py                # TUM / Bonn / RealSense parsers
 │   ├── eval_utils.py             # ATE (evo), PSNR/SSIM/LPIPS, PLY export
 │   ├── config_utils.py           # YAML inheritance loader
 │   ├── pose_utils.py             # SE(3) pose update (Lie algebra)
@@ -383,42 +364,6 @@ DynaSem-GS/
 - **Losses.** Tracking: masked RGB L1 + depth L1 (`alpha` weighted). Mapping: RGB L1 +
   depth L1 + semantic L1 (masked) + isotropic regularization, with 3DGS
   densification/pruning and keyframe-pose refinement (`pose_window`).
-
----
-
-## Citation
-
-If you find this work useful in your research, please consider citing our paper:
-
-```bibtex
-@article{DynaSemGS,
-  title   = {TODO: your paper title},
-  author  = {TODO: your authors},
-  journal = {TODO: journal},
-  year    = {2026}
-}
-```
-
-The underlying systems:
-
-```bibtex
-@inproceedings{Matsuki:Murai:etal:CVPR2024,
-  title     = {{G}aussian {S}platting {SLAM}},
-  author    = {Hidenobu Matsuki and Riku Murai and Paul H. J. Kelly and Andrew J. Davison},
-  booktitle = {Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition},
-  year      = {2024}
-}
-
-@Article{kerbl3Dgaussians,
-  author  = {Kerbl, Bernhard and Kopanas, Georgios and Leimk{\"u}hler, Thomas and Drettakis, George},
-  title   = {3D Gaussian Splatting for Real-Time Radiance Field Rendering},
-  journal = {ACM Transactions on Graphics},
-  number  = {4},
-  volume  = {42},
-  month   = {July},
-  year    = {2023}
-}
-```
 
 ---
 
